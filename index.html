@@ -285,8 +285,7 @@ NR.lib = (() => {
 </script>
 <script>
 /* ===== search.js ===== */
-/* search.js – real song search with no key required (Piped community API, Invidious fallback);
-   optional YouTube Data API v3 key (Settings) is tried first when present. */
+/* search.js – song search using public Piped community services with Invidious fallback. */
 NR.search = (() => {
   const PIPED = ['https://pipedapi.kavin.rocks', 'https://pipedapi.adminforge.de', 'https://api.piped.private.coffee', 'https://pipedapi.leptons.xyz'];
   const INV = ['https://inv.nadeko.net', 'https://yewtu.be', 'https://invidious.nerdvpn.de'];
@@ -341,7 +340,6 @@ NR.search = (() => {
   }
   async function trending(sig) {
     let out = [];
-    if (key()) { try { out = fromApi(await viaApi(`videos?part=snippet&chart=mostPopular&videoCategoryId=10&maxResults=24&regionCode=${region}`, sig)); } catch (x) { if (aborted(sig)) throw x; } }
     if (!out.length) out = await query(`top songs ${new Date().getFullYear()}`, sig);
     if (out.length) NR.kv.set('c:trend', out);
     return out;
